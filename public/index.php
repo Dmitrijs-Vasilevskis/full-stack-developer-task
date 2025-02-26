@@ -2,6 +2,19 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use App\Models\Products\Product;
+use App\Database\Database;
+use App\Models\Category\Categories;
+
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(204);
+    exit();
+}
+
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
     $r->post('/graphql', [App\Controller\GraphQL::class, 'handle']);
 });
@@ -20,8 +33,10 @@ switch ($routeInfo[0]) {
         // ... 405 Method Not Allowed
         break;
     case FastRoute\Dispatcher::FOUND:
-        $handler = $routeInfo[1];
+        [$controller, $method] = $routeInfo[1];
         $vars = $routeInfo[2];
-        echo $handler($vars);
+
+        $response = (new $controller())->$method($vars);
+        echo $response;
         break;
 }

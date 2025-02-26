@@ -2,73 +2,57 @@
 
 namespace App\Controller;
 
+use App\GraphQL\Query\CategoryResolver;
+use App\GraphQL\Query\ProductResolver;
+use App\GraphQL\Mutation\OrderResolver;
 use GraphQL\GraphQL as GraphQLBase;
-use GraphQL\Type\Definition\ObjectType;
-use GraphQL\Type\Definition\Type;
-use GraphQL\Type\Schema;
-use GraphQL\Type\SchemaConfig;
+use GraphQL\Utils\BuildSchema;
 use RuntimeException;
 use Throwable;
 
 class GraphQL {
-    static public function handle() {
+    public function handle()
+    {
+        $schema = BuildSchema::build(file_get_contents(__DIR__ . '/../../graphql/schema.graphql'));
+
         try {
-            $queryType = new ObjectType([
-                'name' => 'Query',
-                'fields' => [
-                    'echo' => [
-                        'type' => Type::string(),
-                        'args' => [
-                            'message' => ['type' => Type::string()],
-                        ],
-                        'resolve' => static fn ($rootValue, array $args): string => $rootValue['prefix'] . $args['message'],
-                    ],
-                ],
-            ]);
-        
-            $mutationType = new ObjectType([
-                'name' => 'Mutation',
-                'fields' => [
-                    'sum' => [
-                        'type' => Type::int(),
-                        'args' => [
-                            'x' => ['type' => Type::int()],
-                            'y' => ['type' => Type::int()],
-                        ],
-                        'resolve' => static fn ($calc, array $args): int => $args['x'] + $args['y'],
-                    ],
-                ],
-            ]);
-        
-            // See docs on schema options:
-            // https://webonyx.github.io/graphql-php/schema-definition/#configuration-options
-            $schema = new Schema(
-                (new SchemaConfig())
-                ->setQuery($queryType)
-                ->setMutation($mutationType)
-            );
-        
             $rawInput = file_get_contents('php://input');
+            
             if ($rawInput === false) {
                 throw new RuntimeException('Failed to get php://input');
             }
-        
-            $input = json_decode($rawInput, true);
-            $query = $input['query'];
-            $variableValues = $input['variables'] ?? null;
-        
-            $rootValue = ['prefix' => 'You said: '];
-            $result = GraphQLBase::executeQuery($schema, $query, $rootValue, null, $variableValues);
-            $output = $result->toArray();
+
+            $requestData = json_decode($rawInput, true);
+
+            $payload = $requestData['query'] ?? $requestData['mutation'] ?? null;
+            $variables = $requestData['variables'] ?? null;
+
+            $res = GraphQLBase::executeQuery($schema, $payload, $this->getResolvers(), null, $variables);
+            $output = $res->toArray();
         } catch (Throwable $e) {
             $output = [
                 'error' => [
                     'message' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString(),
                 ],
             ];
         }
-
-        header('Content-Type: application/json; charset=UTF-8');
+        
         return json_encode($output);
+    }
+
+    /**
+     * Return an array of GraphQL resolvers.
+     *
+     * @return array
+     */
+    private function getResolvers(): array
+    {
+        return [
+            'category' => fn(array $rootValue, array $args) => CategoryResolver::getCategoryPage($rootValue, $args),
+            'categories' => fn(array $rootValue, array $args) => CategoryResolver::getCategories($rootValue, $args),
+            'product' => fn(array $rootValue, array $args) => ProductResolver::getProductBySku($rootValue, $args),
+            'placeOrder' => fn(array $rootValue, array $args) => OrderResolver::placeOrder($rootValue, $args),
+        ];
     }
 }
