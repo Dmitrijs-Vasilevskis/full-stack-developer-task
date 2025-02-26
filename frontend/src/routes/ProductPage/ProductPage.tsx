@@ -24,9 +24,7 @@ class ProductPage extends PureComponent<ProductPageProps> {
   }
 
   componentDidUpdate(
-    prevProps: Readonly<ProductPageProps>,
-    prevState: Readonly<{}>,
-    snapshot?: any
+    prevProps: Readonly<ProductPageProps>
   ): void {
     const { params, fetchProduct } = this.props;
     const prevSku = prevProps.params?.sku;

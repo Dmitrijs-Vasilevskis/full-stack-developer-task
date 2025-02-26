@@ -21,11 +21,7 @@ class Navigation extends PureComponent<NavigationProps> {
     fetchCategoriesRequest();
   }
 
-  componentDidUpdate(
-    prevProps: Readonly<NavigationProps>,
-    prevState: Readonly<{}>,
-    snapshot?: any
-  ): void {
+  componentDidUpdate(): void {
     const { activeCategory, setActiveCategory, categories, params } =
       this.props;
 
