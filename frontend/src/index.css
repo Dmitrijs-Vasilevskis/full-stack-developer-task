@@ -1,0 +1,22 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-btn-primary: #5ECE7B;
+  --color-font-secondary: #8D8F9A;
+  --color-overlay: rgba(57, 55, 72, 0.22);
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+@media (prefers-color-scheme: light) {
+  #body {
+    color: #213547;
+    background-color: #ffffff;
+  }
+}
