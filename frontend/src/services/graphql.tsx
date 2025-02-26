@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 const client = new ApolloClient({
-  uri: "lightgreen-porcupine-187566.hostingersite.com/graphql",
+  uri: "https://www.lightgreen-porcupine-187566.hostingersite.com/graphql",
   cache: new InMemoryCache(),
 });
 
