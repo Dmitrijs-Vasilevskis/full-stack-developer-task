@@ -31,8 +31,8 @@ COPY . .
 # Set proper permissions for the application files
 RUN chown -R www-data:www-data /var/www
 
-# Expose port 80
-EXPOSE 80
+# Expose port 9000
+EXPOSE 9000
 
 # Run the PHP built-in server for production (or you can configure with Nginx)
 CMD ["php-fpm"]
