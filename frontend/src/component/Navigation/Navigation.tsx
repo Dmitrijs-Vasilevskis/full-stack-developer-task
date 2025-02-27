@@ -25,6 +25,10 @@ class Navigation extends PureComponent<NavigationProps> {
     const { activeCategory, setActiveCategory, categories, params } =
       this.props;
 
+    if (!params?.category && !activeCategory && categories.length > 0) {
+      setActiveCategory(categories[0]);
+    }
+
     if (!activeCategory && categories.length > 0 && params?.category) {
       const activeCategory = categories.find(
         (categoryItem) => categoryItem.name === params.category
@@ -55,18 +59,17 @@ class Navigation extends PureComponent<NavigationProps> {
             {categories.map((category: CategoryInterface) => (
               <li key={category.id} className="px-4">
                 <NavLink
+                  key={category.url_key}
                   data-testid={`${
                     activeCategory?.id === category.id
                       ? "active-category-link"
                       : "category-link"
                   }`}
-                  className={({ isActive }) =>
-                    `text-base uppercase px-5 py-3.5 ${
-                      isActive
-                        ? "text-btn-primary border-b-2 border-btn-primary"
-                        : ""
-                    }`
-                  }
+                  className={`text-base uppercase px-5 py-3.5 ${
+                    this.isActiveCategory(category)
+                      ? "text-btn-primary border-b-2 border-btn-primary"
+                      : ""
+                  }`}
                   to={`/${category.url_key}`}
                   onClick={() => this.onCategoryClick(category)}
                 >
