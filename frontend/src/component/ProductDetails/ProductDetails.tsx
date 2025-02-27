@@ -124,7 +124,7 @@ class ProductDetails extends PureComponent<
         <Fragment key={i}>
           <button
             style={{ backgroundColor: item.value }}
-            data-testid={`product-attribute-${attribute.name.toLowerCase()}-${item.value.toLowerCase()}`}
+            data-testid={`product-attribute-${attribute.name.toLowerCase()}-${item.value}`}
             className={`h-8 w-8 border
                 ${isSelected ? "scale-125" : "border-gray-400"}
                  text-sm font-medium border-gray-400 hover:bg-gray-200`}
