@@ -192,9 +192,9 @@ class ProductDetails extends PureComponent<
           onClick={this.handleAddToCart}
           className={`${
             isAllowed ? "bg-btn-primary" : "bg-gray-500 cursor-initial"
-          } px-8 py-4 w-full text-white font-semibold text-base leading-5 tracking-normal text-center`}
+          } px-8 py-4 w-full text-white font-semibold text-base leading-5 tracking-normal text-center uppercase`}
         >
-          Add to cart
+          ADD TO CART
         </button>
       </div>
     );

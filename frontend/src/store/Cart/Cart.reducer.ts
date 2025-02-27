@@ -25,6 +25,7 @@ const cartSlice = createSlice({
         updateCart(state, action: PayloadAction<CartItems[]>) {
             state.cartItems = action.payload;
             state.cartItemsCount = getCartItemsTotalCount();
+            state.cartOverlayStatus = !state.cartOverlayStatus;
         },
         deleteFromCart(state, action: PayloadAction<any>) {
             state.cartItems = action.payload;
