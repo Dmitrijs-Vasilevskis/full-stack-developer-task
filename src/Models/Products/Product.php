@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Products;
 
 use App\Models\Model;
@@ -10,13 +12,21 @@ use App\Models\Price\ProductPrice;
 class Product extends Model
 {
     protected static string $table = 'products';
+
     public int $id;
+
     public string $sku;
+
     public string $name;
+
     public string $description;
+
     public int $category_id;
+
     public string $brand;
+
     protected string $gallery;
+    
     public int $inStock;
 
     public function __construct(array $attributes = [])
@@ -28,15 +38,19 @@ class Product extends Model
         }
     }
 
-    public function price()
+    public function price(): array
     {
         return $this->hasMany(ProductPrice::class, 'product_id');
     }
 
-    public function attributes()
+    /**
+     * Return an propperly structured array of attributes.
+     *
+     * @return array
+     */
+    public function attributes(): array
     {
         $records = $this->hasMany(ProductAttributes::class, 'product_id');
-
         $attributes = [];
 
         foreach ($records as $record) {

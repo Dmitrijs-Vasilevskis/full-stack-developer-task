@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\GraphQL\Query;
 
 use App\Models\Category\Categories;
@@ -14,10 +16,9 @@ class CategoryResolver
      *
      * @param mixed $rootValue
      * @param array $args
-     *
      * @return array
      */
-    public static function getCategories($rootValue, $args): array
+    public static function getCategories(mixed $rootValue, array $args): array
     {
         return Categories::all();
     }
@@ -27,14 +28,11 @@ class CategoryResolver
      * 
      * @param mixed $rootValue
      * @param array $args
-     *
      * @return array
-     *
      */
-    public static function getCategoryPage($rootValue, $args)
+    public static function getCategoryPage(mixed $rootValue, array $args): array
     {
         try {
-
             if (!isset($args['id']) || $args['id'] == 1) {
                 $category = Categories::first();
                 $products = Product::all();
@@ -42,7 +40,6 @@ class CategoryResolver
                 $category = Categories::find($args['id']);
                 $products = Product::where('category_id', $category->id);
             }
-
             $products = Product::with($products, 'attributes', 'price');
 
             return [

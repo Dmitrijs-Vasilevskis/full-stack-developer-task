@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\GraphQL\Query;
 
 use App\Models\Products\Product;
@@ -8,11 +10,18 @@ use RuntimeException;
 
 class ProductResolver
 {
-    public static function getProductBySku($rootValue, $args)
+    /**
+     * Get product by SKU
+     * 
+     * @param mixed $rootValue
+     * @param array $args
+     * @return Product
+     * @throws RuntimeException
+     */
+    public static function getProductBySku($rootValue, $args): mixed
     {
         try {
             $product = Product::where('sku', $args['sku']);
-
             $product = Product::with($product, 'attributes', 'price');
 
             return reset($product);

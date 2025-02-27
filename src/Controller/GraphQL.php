@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\GraphQL\Query\CategoryResolver;
@@ -11,7 +13,7 @@ use RuntimeException;
 use Throwable;
 
 class GraphQL {
-    public function handle()
+    public function handle(): bool|string
     {
         $schema = BuildSchema::build(file_get_contents(__DIR__ . '/../../graphql/schema.graphql'));
 
@@ -23,10 +25,8 @@ class GraphQL {
             }
 
             $requestData = json_decode($rawInput, true);
-
             $payload = $requestData['query'] ?? $requestData['mutation'] ?? null;
             $variables = $requestData['variables'] ?? null;
-
             $res = GraphQLBase::executeQuery($schema, $payload, $this->getResolvers(), null, $variables);
             $output = $res->toArray();
         } catch (Throwable $e) {

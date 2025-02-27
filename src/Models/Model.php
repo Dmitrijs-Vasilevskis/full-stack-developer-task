@@ -7,7 +7,9 @@ use App\Database\Database;
 abstract class Model
 {
     protected static string $table;
+
     protected static string $primaryKey = 'id';
+    
     protected array $attributes = [];
 
     public function __construct(array $attributes = [])
@@ -16,7 +18,7 @@ abstract class Model
         $this->fill($attributes);
     }
 
-    public function fill(array $attributes)
+    public function fill(array $attributes): void
     {
         foreach ($attributes as $key => $value) {
             if (property_exists($this, $key)) {
@@ -25,7 +27,7 @@ abstract class Model
         }
     }
 
-    public function __get($key)
+    public function __get($key): mixed
     {
         return $this->attributes[$key] ?? null;
     }
@@ -42,14 +44,15 @@ abstract class Model
     {
         $query = "SELECT * FROM " . static::$table . " LIMIT 1";
         $result = Database::fetchOne($query);
+
         return $result ? new static($result) : null;
     }
 
     public static function create(array $attributes): ?self
     {
         $id = Database::insert(static::$table, $attributes);
-
         $record = static::find($id);
+
         return $record;
     }
 

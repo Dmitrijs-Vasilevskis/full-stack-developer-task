@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Category;
 
 use App\Models\Model;
@@ -12,7 +14,7 @@ class Categories extends Model
     public int $id;
 
     public string $name;
-
+    
     public string $url_key;
 
     public function products(): ?array

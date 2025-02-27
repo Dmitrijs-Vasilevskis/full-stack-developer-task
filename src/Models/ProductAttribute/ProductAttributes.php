@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\ProductAttribute;
 
 use App\Models\Model;
@@ -9,9 +11,13 @@ use App\Models\Attributes\Attributes;
 class ProductAttributes extends Model
 {
     protected static string $table = 'product_attributes';
+
     public int $id;
+
     public int $product_id;
+
     public int $attribute_id;
+    
     public string $value;
 
     public function product(): ?Product

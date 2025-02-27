@@ -13,12 +13,6 @@ class Database
 {
     private static ?PDO $connection = null;
     private const ENV_FILE = __DIR__ . '/../../.env';
-    private const DB_HOST = 'DB_HOST';
-    private const DB_NAME = 'DB_NAME';
-    private const DB_USER = 'DB_USER';
-    private const DB_PASS = 'DB_PASS';
-    private const DB_PORT = 'DB_PORT';
-
     private static array $options = [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -30,17 +24,19 @@ class Database
     public static function getConnection(): PDO
     {
         if (!self::$connection) {
-            // Load .env variables once
             (new DotEnv(self::ENV_FILE))->load();
 
             try {
+                $host = getenv('DB_HOST');
+                $dbname = getenv('DB_NAME');
+                $port = getenv('DB_PORT');
+                $user = getenv('DB_USER');
+                $pass = getenv('DB_PASS');
+
                 self::$connection = new PDO(
-                    'mysql:host=' . getenv(self::DB_HOST) .
-                        ';dbname=' . getenv(self::DB_NAME) .
-                        ';port=' . getenv(self::DB_PORT) .
-                        ';charset=utf8mb4',
-                    getenv(self::DB_USER),
-                    getenv(self::DB_PASS),
+                    "mysql:host={$host};dbname={$dbname};port={$port};charset=utf8mb4",
+                    $user,
+                    $pass,
                     self::$options
                 );
             } catch (PDOException $e) {

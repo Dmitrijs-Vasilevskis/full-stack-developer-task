@@ -8,33 +8,34 @@ use App\Models\Orders\Orders;
 
 class OrderResolver
 {
-    public static function placeOrder($rootValue, $args): array
+    /**
+     *
+     * @param mixed $rootValue
+     * @param array $args
+     * @return array
+     */
+    public static function placeOrder(mixed $rootValue, array $args): array
     {
-        if (isset($args['input']['items'])) {
-
-            $items = $args['input']['items'];
-            $totals = 0;
-            foreach ($items as $item) {
-                $totals += $item['price'] * $item['quantity'];
-            };
-
-            $order = Orders::create([
-                'order_items' => json_encode($items),
-                'total' => $totals,
-                'status' => 'pending',
-            ]);
-
-            if ($order) {
-                return [
-                    'status' => true,
-                    'message' => 'Order placed successfully'
-                ];
-            }
+        if (!isset($args['input']['items']) || empty($args['input']['items'])) {
+            return [
+                'status' => false,
+                'message' => 'No items provided'
+            ];
         }
 
+        $items = $args['input']['items'];
+        $totals = array_reduce($items, fn($carry, $item) => $carry + ($item['price'] * $item['quantity']), 0);
+
+        $order = Orders::create([
+            'order_items' => json_encode($items, JSON_THROW_ON_ERROR),
+            'total' => $totals,
+            'status' => 'pending',
+        ]);
+
         return [
-            'status' => false,
-            'message' => 'No items provided'
+            'status' => true,
+            'message' => 'Order placed successfully',
+            'order_id' => $order->id
         ];
     }
 }
