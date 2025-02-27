@@ -102,7 +102,7 @@ class ProductDetails extends PureComponent<
             className={`
             ${isSelected ? "text-white bg-black" : "bg-white text-black"}
             px-4 py-2  border text-sm font-medium border-gray-400 hover:opacity-75`}
-            data-testid={`product-attribute-${attribute.name.toLowerCase()}=${item.value.toLowerCase()}`}
+            data-testid={`product-attribute-${attribute.name.toLowerCase()}-${item.value.toLowerCase()}`}
             name={attribute.name}
             value={item.value}
             disabled={isSelected}
@@ -124,7 +124,7 @@ class ProductDetails extends PureComponent<
         <Fragment key={i}>
           <button
             style={{ backgroundColor: item.value }}
-            data-testid={`product-attribute-${attribute.name.toLowerCase()}=${item.value.toLowerCase()}`}
+            data-testid={`product-attribute-${attribute.name.toLowerCase()}-${item.value.toLowerCase()}`}
             className={`h-8 w-8 border
                 ${isSelected ? "scale-125" : "border-gray-400"}
                  text-sm font-medium border-gray-400 hover:bg-gray-200`}

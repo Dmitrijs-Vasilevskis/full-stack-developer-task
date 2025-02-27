@@ -12,20 +12,18 @@ class Minicart extends PureComponent<
   render() {
     const { cartItemsCount, toggleCartOverlay } = this.props;
     return (
-      <>
-        <button
-          data-testid="cart-btn"
-          className="relative cursor-pointer"
-          onClick={() => toggleCartOverlay()}
-        >
-          <img src={miniCartSvg} alt="empty-cart" />
-          {cartItemsCount > 0 && (
-            <span className="absolute top-[-10px] right-[-10px] h-5 w-5 rounded-full text-sm text-white  bg-black flex justify-center">
-              {cartItemsCount}
-            </span>
-          )}
-        </button>
-      </>
+      <button
+        data-testid="cart-btn"
+        className="relative cursor-pointer"
+        onClick={() => toggleCartOverlay()}
+      >
+        <img src={miniCartSvg} alt="empty-cart" />
+        {cartItemsCount > 0 && (
+          <span className="absolute top-[-10px] right-[-10px] h-5 w-5 rounded-full text-sm text-white  bg-black flex justify-center">
+            {cartItemsCount}
+          </span>
+        )}
+      </button>
     );
   }
 }
