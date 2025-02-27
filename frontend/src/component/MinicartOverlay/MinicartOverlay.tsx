@@ -61,7 +61,10 @@ class MinicartOverlay extends PureComponent<
     const { cartItems, cartItemsCount } = this.props;
 
     return (
-      <aside className="absolute top-[100%] right-0 min-w-[320px] px-4 py-8 bg-white shadow-lg">
+      <aside
+        data-testid="cart-overlay"
+        className="absolute top-[100%] right-0 min-w-[320px] px-4 py-8 bg-white shadow-lg"
+      >
         <div className="text-start mb-4">
           <strong>My Bag,</strong>
           {!!cartItemsCount && this.renderCartCounter()}
