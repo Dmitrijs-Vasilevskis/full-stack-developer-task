@@ -102,7 +102,7 @@ class ProductDetails extends PureComponent<
             className={`
             ${isSelected ? "text-white bg-black" : "bg-white text-black"}
             px-4 py-2  border text-sm font-medium border-gray-400 hover:opacity-75`}
-            data-testid={`product-attribute-${attribute.name.toLowerCase()}-${item.value.toLowerCase()}`}
+            data-testid={`product-attribute-${attribute.name.toLowerCase()}-${item.value}`}
             name={attribute.name}
             value={item.value}
             disabled={isSelected}
