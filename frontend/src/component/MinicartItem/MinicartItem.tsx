@@ -131,7 +131,7 @@ class MinicartItem extends PureComponent<
   }
 
   renderQty(): ReactElement {
-    const { product } = this.state;
+    const { product } = this.props;
     return (
       <div className="flex flex-col justify-between">
         <button
