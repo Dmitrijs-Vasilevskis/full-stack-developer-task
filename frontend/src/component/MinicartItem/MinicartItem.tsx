@@ -35,7 +35,7 @@ class MinicartItem extends PureComponent<
   getProductPrice() {
     const { product } = this.state;
 
-    return (product.price.amount * product.qty).toFixed(2);
+    return product.price.amount.toFixed(2);
   }
 
   handleQtyChange = (value: number) => {
