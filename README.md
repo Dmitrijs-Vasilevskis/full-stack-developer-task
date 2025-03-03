@@ -13,6 +13,7 @@
 
 ### https://violet-hawk-940965.hostingersite.com/graphql
 
+```
 #### List of categories: 
 
 query Categories {
